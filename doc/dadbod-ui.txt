@@ -557,6 +557,12 @@ g:db_ui_disable_mappings
 
 		Default value: `0`
 
+					      *g:db_ui_disable_folds*
+g:db_ui_disable_folds
+		If this is set to `1`, database output will not be folded.
+
+		Default value: `0`
+
   					      *g:db_ui_show_database_icon*
 g:db_ui_show_database_icon
 		If this is set to 1, will add an icon on database name. Notice

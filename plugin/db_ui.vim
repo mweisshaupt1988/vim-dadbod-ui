@@ -21,6 +21,7 @@ let g:db_ui_force_echo_notifications = get(g:, 'db_ui_force_echo_notifications',
 let g:Db_ui_buffer_name_generator = get(g:, 'Db_ui_buffer_name_generator', 0)
 let g:db_ui_debug = get(g:, 'db_ui_debug', 0)
 let g:db_ui_hide_schemas = get(g:, 'db_ui_hide_schemas', [])
+let g:db_ui_disable_folds = get(g:, 'db_ui_disable_folds', 0)
 let s:dbui_icons = get(g:, 'db_ui_icons', {})
 let s:expanded_icon = get(s:dbui_icons, 'expanded', '▾')
 let s:collapsed_icon = get(s:dbui_icons, 'collapsed', '▸')
@@ -109,9 +110,14 @@ augroup dbui
   autocmd!
   autocmd BufRead,BufNewFile *.dbout set filetype=dbout
   autocmd BufReadPost *.dbout nested call db_ui#save_dbout(expand('<afile>'))
-  autocmd FileType dbout setlocal foldmethod=expr foldexpr=db_ui#dbout#foldexpr(v:lnum) | normal!zo
   autocmd FileType dbout,dbui autocmd BufEnter,WinEnter <buffer> stopinsert
 augroup END
+
+if g:db_ui_disable_folds != 1
+  augroup dbui
+    autocmd FileType dbout setlocal foldmethod=expr foldexpr=db_ui#dbout#foldexpr(v:lnum) | normal!zo
+  augroup END
+endif
 
 command! DBUI call db_ui#open('<mods>')
 command! DBUIToggle call db_ui#toggle()
